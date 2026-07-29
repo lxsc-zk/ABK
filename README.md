@@ -10,10 +10,17 @@
 [![ABK App](https://img.shields.io/github/actions/workflow/status/xingguangcuican6666/ABK/build-abk-app.yml?label=ABK%20App&style=flat-square&logo=android&logoColor=white)](https://github.com/xingguangcuican6666/ABK/actions/workflows/build-abk-app.yml)
 [![KernelSU](https://img.shields.io/badge/KernelSU-Supported-5AA300?style=flat-square)](https://kernelsu.org/)
 [![SUSFS](https://img.shields.io/badge/SUSFS-Integrated-E67E22?style=flat-square)](https://gitlab.com/simonpunk/susfs4ksu)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/xingguangcuican6666/ABK)
 
 简体中文 | [English](README-EN.md)
 
 </div>
+
+## 支持我的工作
+
+如果你喜欢这个项目，欢迎在 Ko-fi 上为我点一杯咖啡喵
+
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/xingguangcuican)
 
 ## 项目定位
 
@@ -107,6 +114,16 @@ sukisu=
 ```
 
 留空表示使用对应分支的最新提交。
+
+## KSU 分支 `Latest(最新)`（仅 GKI）
+
+适用于所有 GKI 的 `workflow_dispatch` 工作流（[`kernel-custom.yml`](.github/workflows/kernel-custom.yml)、[`kernel-a12-5-10.yml`](.github/workflows/kernel-a12-5-10.yml)、[`kernel-a13-5-15.yml`](.github/workflows/kernel-a13-5-15.yml)、[`kernel-a14-6-1.yml`](.github/workflows/kernel-a14-6-1.yml)、[`kernel-a15-6-6.yml`](.github/workflows/kernel-a15-6-6.yml)、[`kernel-a16-6-12.yml`](.github/workflows/kernel-a16-6-12.yml) 及 [`kernel-full-feature-matrix.yml`](.github/workflows/kernel-full-feature-matrix.yml)）。App 派发的是 [`kernel-custom.yml`](.github/workflows/kernel-custom.yml)；在 GitHub 网页上也可对固定版本工作流手动选择 **Latest(最新)**。
+
+在 GitHub Actions 与 App 的 GKI 构建界面中，**Latest(最新)** 位于 **Dev** 与 **Custom** 之间，由 [`resolve-ksu-ref.sh`](.github/scripts/resolve-ksu-ref.sh) 在运行时解析上游 KernelSU 来源：
+
+- **Official / SukiSU / ReSukiSU（GKI）：** 优先使用上游 `main` 的 **HEAD**，当该提交存在成功的 `release.yml`（标签发布）或独立的 `build-manager.yml` 时，内核与管理器共用该 `head_sha`；否则回退到 `main` 上最近一次成功的独立 `build-manager`。管理器经 [nightly.link](https://nightly.link/) 拉取（`manager.zip` 或 `Manager-release.zip`）；下载时同样会查找 `release.yml` 的 run。若 `main` 上两者皆无可用 CI，Latest 解析失败。
+
+若管理器下载失败，管理器 job 对应步骤会失败，但**内核构建仍会继续**。Latest 不会回退到 `releases/latest`（Stable/Dev 用的发布包路径）。
 
 ## Stock Config
 
@@ -221,11 +238,15 @@ App 编译由 [`Build ABK App`](.github/workflows/build-abk-app.yml) 工作流�
 - 当前工作流默认打包 `arm64-v8a`、`armeabi-v7a`、`x86_64` 三个 ABI；运行时会优先使用 APK 内置 `ksud`，不可用时再回退到 `/data/adb/ksud` 或系统 `ksud`。
 - 仓库不直接提交预编译 `ksud` 二进制；来源、构建方式和许可证说明见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
 
+### Self-hosted Runner（可选）
+
+App 编译工作流（`Build ABK App` / `Build ABK App (dev)`）通过仓库变量 `APP_RUNNER` 选择 runner。**未设置时默认使用 GitHub 托管的 `ubuntu-latest`**，Fork 无需任何配置即可工作。需要在自己的服务器上构建时，请参考 [`docs/self-hosted-runner.md`](docs/self-hosted-runner.md)。
+
 ## 贡献者
 
-以下列表按当前 git 历史统计，仅展示可识别的 GitHub 用户名/链接，并过滤自动化账号：
+以下列表按当前 git 历史归一化到可识别的 GitHub 用户名/链接，并按用户名排序；自动化账号与无法可靠映射的身份已过滤：
 
-[@TheWildJames](https://github.com/TheWildJames)、[@zzh20188](https://github.com/zzh20188)、[@xingguangcuican6666](https://github.com/xingguangcuican6666)、[@ShirkNeko](https://github.com/ShirkNeko)、[@huime180](https://github.com/huime180)、[@MiRinChan](https://github.com/MiRinChan)、[@FunLay123](https://github.com/FunLay123)、[@guruji-byte](https://github.com/guruji-byte)、[@Xiaomichael](https://github.com/Xiaomichael)、[@DreamFerry](https://github.com/DreamFerry)、[@liqideqq](https://github.com/liqideqq)、[@elysias123](https://github.com/elysias123)、[@Fede2782](https://github.com/Fede2782)、[@ReeViiS69](https://github.com/ReeViiS69)、[@TheSillyOk](https://github.com/TheSillyOk)、[@prpjzz](https://github.com/prpjzz)、[@ukriu](https://github.com/ukriu)、[@wrnxr233](https://github.com/wrnxr233)、[@Tools-cx-app](https://github.com/Tools-cx-app)、[@Akuma-Noko](https://github.com/Akuma-Noko)、[@DebugBoard](https://github.com/DebugBoard)、[@FixeQyt](https://github.com/FixeQyt)、[@LX200944](https://github.com/LX200944)、[@Starsun](https://github.com/Starsun)、[@yx1234587](https://github.com/yx1234587)。
+[@Akuma-Noko](https://github.com/Akuma-Noko)、[@DebugBoard](https://github.com/DebugBoard)、[@DreamFerry](https://github.com/DreamFerry)、[@elysias123](https://github.com/elysias123)、[@fanziyun](https://github.com/fanziyun)、[@Fede2782](https://github.com/Fede2782)、[@FixeQyt](https://github.com/FixeQyt)、[@FunLay123](https://github.com/FunLay123)、[@gsf114](https://github.com/gsf114)、[@guruji-byte](https://github.com/guruji-byte)、[@huime180](https://github.com/huime180)、[@liqideqq](https://github.com/liqideqq)、[@LX200944](https://github.com/LX200944)、[@Mazha0309](https://github.com/Mazha0309)、[@MiRinChan](https://github.com/MiRinChan)、[@prpjzz](https://github.com/prpjzz)、[@ReeViiS69](https://github.com/ReeViiS69)、[@ShirkNeko](https://github.com/ShirkNeko)、[@Starsun](https://github.com/Starsun)、[@TheSillyOk](https://github.com/TheSillyOk)、[@TheWildJames](https://github.com/TheWildJames)、[@Tools-cx-app](https://github.com/Tools-cx-app)、[@ukriu](https://github.com/ukriu)、[@wrnxr233](https://github.com/wrnxr233)、[@Xiaomichael](https://github.com/Xiaomichael)、[@xingguangcuican6666](https://github.com/xingguangcuican6666)、[@yx1234587](https://github.com/yx1234587)、[@zzh20188](https://github.com/zzh20188)。
 
 ## 开放源代码许可
 
@@ -235,7 +256,7 @@ App 编译由 [`Build ABK App`](.github/workflows/build-abk-app.yml) 工作流�
 
 | 组件 | 来源 | 许可证 |
 | --- | --- | --- |
-| AnyBase Kernel | [`LICENSE`](LICENSE) | GPL-2.0 |
+| AnyBase Kernel | [`LICENSE`](LICENSE) | GPL-3.0 |
 | ABK Control native bridge | `app/src/main/cpp/uapi/abk_control.h` | GPL-2.0 |
 | xingguang DDK module | `ddk/xingguang-ddk/xingguang_ddk.c` | GPL |
 | DDK kernel API patch | `ddk/patches/xingguang-ddk/0001-xingguang-ddk-api.patch` | GPL-2.0 |
@@ -246,8 +267,8 @@ App 编译由 [`Build ABK App`](.github/workflows/build-abk-app.yml) 工作流�
 
 | 项目 | 地址 | 许可证 |
 | --- | --- | --- |
-| zzh20188/GKI_KernelSU_SUSFS | <https://github.com/zzh20188/GKI_KernelSU_SUSFS> | 上游仓库许可证 |
-| WildKernels/GKI_KernelSU_SUSFS | <https://github.com/WildKernels/GKI_KernelSU_SUSFS> | 上游仓库许可证 |
+| zzh20188/GKI_KernelSU_SUSFS | <https://github.com/zzh20188/GKI_KernelSU_SUSFS> | GPL-2.0 |
+| WildKernels/GKI_KernelSU_SUSFS | <https://github.com/WildKernels/GKI_KernelSU_SUSFS> | 上游仓库许可证 / 未检测到 SPDX |
 | CodeLinaro CLO LA | <https://git.codelinaro.org/clo/la> | 顶层上游各项目许可证 |
 | OnePlusOSS/kernel_manifest | <https://github.com/OnePlusOSS/kernel_manifest> | 上游仓库许可证 / 未检测到 SPDX |
 | Xiaomichael/kernel_manifest | <https://github.com/Xiaomichael/kernel_manifest> | 上游仓库许可证 / 未检测到 SPDX |
@@ -260,17 +281,17 @@ App 编译由 [`Build ABK App`](.github/workflows/build-abk-app.yml) 工作流�
 | ShirkNeko/susfs4ksu | <https://github.com/ShirkNeko/susfs4ksu> | GPL-2.0 |
 | SukiSU_patch | <https://github.com/ShirkNeko/SukiSU_patch> | GPL-2.0 |
 | AnyKernel3 | <https://github.com/WildKernels/AnyKernel3> | GPL-2.0 |
-| Xiaomichael/AnyKernel3 | <https://github.com/Xiaomichael/AnyKernel3> | 上游仓库许可证 / NOASSERTION |
+| Xiaomichael/AnyKernel3 | <https://github.com/Xiaomichael/AnyKernel3> | [Custom License](https://github.com/Xiaomichael/AnyKernel3/blob/master/LICENSE) |
 | WildKernels/kernel_patches | <https://github.com/WildKernels/kernel_patches> | GPL-2.0 |
 | cctv18/susfs4oki | <https://github.com/cctv18/susfs4oki> | GPL-3.0 |
-| SukiSU_KernelPatch_patch | <https://github.com/SukiSU-Ultra/SukiSU_KernelPatch_patch> | 上游仓库许可证 |
-| Action-Build | <https://github.com/Numbersf/Action-Build> | 上游仓库许可证 |
-| SUSFS 模块构建来源 | <https://github.com/sidex15/susfs4ksu-module> | 上游仓库许可证 |
+| SukiSU_KernelPatch_patch | <https://github.com/SukiSU-Ultra/SukiSU_KernelPatch_patch> | GPL-2.0 |
+| Action-Build | <https://github.com/Numbersf/Action-Build> | [Custom License](https://github.com/Numbersf/Action-Build/blob/SukiSU-Ultra/LICENSE) |
+| SUSFS 模块构建来源 | <https://github.com/sidex15/susfs4ksu-module> | AGPL-3.0 |
 | GCC prebuilts | <https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-gnu-6.4.1> | GPL-family toolchain notices |
-| Baseband Guard | <https://github.com/vc-teahouse/Baseband-guard> | 上游仓库许可证 |
-| Re-Kernel | <https://github.com/Sakion-Team/Re-Kernel> | 上游仓库许可证 |
-| Droidspaces / 虚拟化支持补丁来源 | <https://github.com/ravindu644/Droidspaces-OSS> | 上游仓库许可证 |
-| ABK_repo 模块仓库 | <https://github.com/xingguangcuican6666/ABK_repo> | 上游仓库许可证 |
+| Baseband Guard | <https://github.com/vc-teahouse/Baseband-guard> | GPL-2.0 |
+| Re-Kernel | <https://github.com/Sakion-Team/Re-Kernel> | GPL-2.0 |
+| Droidspaces / 虚拟化支持补丁来源 | <https://github.com/ravindu644/Droidspaces-OSS> | GPL-3.0 |
+| ABK_repo 模块仓库 | <https://github.com/xingguangcuican6666/ABK_repo> | GPL-3.0 |
 | AOSP kernel/common、manifest、mkbootimg、build-tools | <https://android.googlesource.com/> | GPL-2.0 / Apache-2.0 / AOSP notices |
 | Android GKI certified boot images / command line tools | <https://dl.google.com/android/> | Android 分发条款 / Android SDK License |
 
@@ -298,4 +319,4 @@ Web 依赖来自 `web/package-lock.json`。
 
 ## License
 
-ABK 本仓库按 GPL-2.0 发布。使用、分发或修改仓库中的第三方项目、补丁、二进制来源和依赖包前，请分别遵守对应上游项目的许可证和使用条款。使用 ABK、工作流、自定义模块或构建产物造成的设备损坏、数据丢失、账号风险、服务中断、合规问题或任何直接/间接损失，均由使用者自行承担。
+ABK 本仓库按 GPL-3.0 发布。使用、分发或修改仓库中的第三方项目、补丁、二进制来源和依赖包前，请分别遵守对应上游项目的许可证和使用条款。使用 ABK、工作流、自定义模块或构建产物造成的设备损坏、数据丢失、账号风险、服务中断、合规问题或任何直接/间接损失，均由使用者自行承担。
